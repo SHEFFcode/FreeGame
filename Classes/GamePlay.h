@@ -23,6 +23,8 @@ private:
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
     
+    void Setup();
+    
     cocos2d::PhysicsWorld *sceneWorld;
     
     cocos2d::Sprite *puff;

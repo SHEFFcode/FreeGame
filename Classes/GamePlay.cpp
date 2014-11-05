@@ -39,6 +39,8 @@ bool GamePlay::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
+    this->Setup();  // Load the stage / level
+    
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
     edgeBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
     edgeBody->setContactTestBitmask( true );
@@ -66,7 +68,6 @@ bool GamePlay::init()
     touchListener->onTouchBegan = CC_CALLBACK_2( GamePlay::onTouchBegan, this );
     touchListener->onTouchMoved = CC_CALLBACK_2( GamePlay::onTouchMoved, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, puff);
-    
     
     return true;
 }
@@ -107,6 +108,43 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     
     return true;
 }
+
+void GamePlay::Setup()
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
+    __String *level = __String::createWithFormat("tiles/%i_%i.tmx", stageLoaded,levelLoaded);
+    auto map = TMXTiledMap::create(level->getCString());
+    map->setAnchorPoint(Vec2(0, 0));
+
+    float map_height = map->getMapSize().height * 32;
+    float ratio = visibleSize.height / map_height;
+    map->setScale(ratio);
+    
+    addChild(map);
+    
+    auto layer = map->getLayer("Obstacles");
+    auto layerSize = layer->getLayerSize();
+    
+    for (int y = 0; y < layerSize.height; y++)
+    {
+        for (int x = 0; x < layerSize.width; x++)
+        {
+            auto obstacle = layer->getTileAt(Point(x, y));
+            if(obstacle)
+            {
+                
+            }
+
+        }
+    }
+}
+
+
+
+
+
+
 
 
 
