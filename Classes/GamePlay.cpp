@@ -1,4 +1,5 @@
 #include "GamePlay.h"
+#include "Obstacle.h"
 #include "Definitions.h"
 
 USING_NS_CC;
@@ -130,10 +131,10 @@ void GamePlay::Setup()
     {
         for (int x = 0; x < layerSize.width; x++)
         {
-            auto obstacle = layer->getTileAt(Point(x, y));
-            if(obstacle)
+            auto sprite = layer->getTileAt(Point(x, y));
+            if(sprite)
             {
-                
+                obstacle.CreateObstacle(this, sprite);
             }
 
         }

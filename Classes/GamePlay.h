@@ -2,6 +2,7 @@
 #define __GAME_PLAY_H__
 
 #include "cocos2d.h"
+#include "Obstacle.h"
 
 class GamePlay : public cocos2d::Layer
 {
@@ -24,6 +25,8 @@ private:
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
     
     void Setup();
+    
+    Obstacle obstacle;
     
     cocos2d::PhysicsWorld *sceneWorld;
     
