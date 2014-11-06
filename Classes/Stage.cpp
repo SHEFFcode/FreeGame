@@ -106,7 +106,7 @@ void Stage::GoToGamePlay( cocos2d::Ref *sender )
     
     int levelSet = (int)pMenuItem->getTag();
     
-    auto scene = GamePlay::createScene(stageNum, levelSet);
+    auto scene = GamePlay::createScene(stageNum, levelSet); // stage num, level num
     
     Director::getInstance()->replaceScene(scene);
 }

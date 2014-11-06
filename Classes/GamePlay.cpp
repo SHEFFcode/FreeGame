@@ -42,6 +42,7 @@ bool GamePlay::init()
     
     this->Setup();  // Load the stage / level
     
+    // setup bounding box
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
     edgeBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
     edgeBody->setContactTestBitmask( true );
@@ -52,6 +53,9 @@ bool GamePlay::init()
     
     this->addChild(edgeNode);
     
+    // MOVE TO PUFF CLASS
+    
+    // create puff player
     puff = Sprite::create("puff.png");
     auto puffBody = PhysicsBody::createCircle(puff->getContentSize().width / 2);
     puffBody->setCollisionBitmask( PUFF_COLLISION_BITMASK );
@@ -60,10 +64,12 @@ bool GamePlay::init()
     puff->setPosition(Point(visibleSize.width / 4 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(puff);
     
+    // setup physics
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1( GamePlay::onContactBegin, this );
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
     
+    //setup touch listener
     auto touchListener = EventListenerTouchOneByOne::create();
     touchListener->setSwallowTouches( true );
     touchListener->onTouchBegan = CC_CALLBACK_2( GamePlay::onTouchBegan, this );

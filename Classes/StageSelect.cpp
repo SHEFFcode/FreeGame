@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 
-unsigned int set;
+unsigned int set; // which set of stages is shown 0 or 1
 
 Scene* StageSelect::createScene( unsigned int setRef )
 {
@@ -45,7 +45,6 @@ bool StageSelect::init()
     auto xStart = visibleSize.width * 0.1;
     auto yStart = visibleSize.height * 0.2;
     
-    xStart = visibleSize.width * 0.1;
     int mStart, mEnd;
     
     if(!set){
@@ -104,7 +103,7 @@ void StageSelect::Stage( cocos2d::Ref *sender )
     
     int tag = (int)pMenuItem->getTag();
     
-    auto scene = Stage::createScene(tag, 0); // stage num, starting levels default
+    auto scene = Stage::createScene(tag, 0); // stage num, starting levelset default
     
     Director::getInstance()->replaceScene(scene);
 
