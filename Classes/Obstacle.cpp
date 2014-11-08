@@ -14,4 +14,5 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::Sprite *sprite)
     
 }
 
+// set up obstacle layer movement
 

@@ -16,6 +16,15 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GamePlay);
     
+    void Setup();
+    
+    cocos2d::Action *mapAction;
+    cocos2d::TMXTiledMap *map;
+    float visiblewidth;
+    
+    
+    
+    
 private:
     void SetPhysicsWorld( cocos2d::PhysicsWorld *world ){ sceneWorld = world; };
     
@@ -24,13 +33,13 @@ private:
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
     
-    void Setup();
     
     Obstacle obstacle;
     
     cocos2d::PhysicsWorld *sceneWorld;
     
     cocos2d::Sprite *puff;
+    
 
 };
 
