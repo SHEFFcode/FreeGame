@@ -7,40 +7,34 @@
 class GamePlay : public cocos2d::Layer
 {
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene( unsigned int stageRef, unsigned int levelRef );
     
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();
     
-    // implement the "static create()" method manually
     CREATE_FUNC(GamePlay);
+    
+private:
+    float visibleWidth;
+    float visibleHeight;
+    
+    unsigned int levelStarted = 0;
+    
+    bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
+    void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
+    
+    bool onContactBegin( cocos2d::PhysicsContact &contact );
+    
+    void SetPhysicsWorld( cocos2d::PhysicsWorld *world ){ sceneWorld = world; };
     
     void Setup();
     
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
-    float visiblewidth;
-    
-    
-    
-    
-private:
-    void SetPhysicsWorld( cocos2d::PhysicsWorld *world ){ sceneWorld = world; };
-    
-    bool onContactBegin( cocos2d::PhysicsContact &contact );
-    
-    bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
-    void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
-    
+    cocos2d::PhysicsWorld *sceneWorld;
+    cocos2d::Sprite *puff;
     
     Obstacle obstacle;
     
-    cocos2d::PhysicsWorld *sceneWorld;
-    
-    cocos2d::Sprite *puff;
-    
-
 };
 
 #endif // __STAGE__H__

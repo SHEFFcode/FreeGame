@@ -9,10 +9,26 @@ Obstacle::Obstacle()
     origin = Director::getInstance()->getVisibleOrigin();
 }
 
-void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::Sprite *sprite)
+void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask)
 {
+    auto layerSize = mapLayer->getLayerSize();
     
+    for (int y = 0; y < layerSize.height; y++)
+    {
+        for (int x = 0; x < layerSize.width; x++)
+        {
+            
+            auto sprite = mapLayer->getTileAt(Point(x, y));
+            if(sprite)
+            {
+                // apply collision masks and physics bodies to each sprite that is created from the tiles.
+                auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
+                spriteBody->setCollisionBitmask( bitmask );
+                spriteBody->setContactTestBitmask( true );
+                sprite->setPhysicsBody(spriteBody);
+            }
+            
+        }
+    }
 }
-
-// set up obstacle layer movement
 

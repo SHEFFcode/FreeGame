@@ -8,7 +8,7 @@ class Obstacle
 public:
     Obstacle();
     
-    void CreateObstacle( cocos2d::Layer *layer, cocos2d::Sprite *sprite );
+    void CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask);
     
 private:
     cocos2d::Size visibleSize;

@@ -38,12 +38,12 @@ bool GamePlay::init()
     }
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
+    visibleWidth = visibleSize.width;
+    visibleHeight = visibleSize.height;
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     this->Setup();  // Load the stage / level
     
-    // play area
-    visiblewidth = visibleSize.width;
     
     // setup bounding box
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
@@ -90,14 +90,15 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
     Size s = target->getContentSize();
     Rect rect = Rect(0, 0, s.width, s.height);
     
-
-
-    
     if (rect.containsPoint(locationInNode))
     {
         //CCLOG("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
-        mapAction = MoveBy::create(MOVEMENT_SPEED * visiblewidth, Point(-visiblewidth * 1.5, 0));
-        map->runAction(mapAction);
+        if(levelStarted == 0) {
+            mapAction = MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0));
+            map->runAction(mapAction);
+        }
+        levelStarted = 1;
+        
         return true;
     }
     return false;
@@ -116,137 +117,52 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
     
+    // Obstacle Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        CCLOG("Collision Occured");
         GamePlay::stopAction(mapAction);
         
+        Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+        Director::getInstance()->getEventDispatcher()->release();
     }
     
-    if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() &&  0x000004 == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && 0x000004 == a->getCollisionBitmask() ) ) //Definitions file definition was not working, consult with Sean.
+    // Collection Collision
+    if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-       // collectibleLayer->removeTileAt(Point(collectionSprite->getPositionX(),collectionSprite->getPositionY()));
-        // in order to make this work I need to get the coordinates of the tiles, which I cannot do for some reason.
         
     }
-
     
-    
+    // FinishLine Collision
+    if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && FINISH_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && FINISH_COLLISION_BITMASK == a->getCollisionBitmask() ) )
+    {
+        
+    }
     
     return true;
 }
 
 void GamePlay::Setup()
 {
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    
     __String *level = __String::createWithFormat("tiles/%i_%i.tmx", stageLoaded,levelLoaded);
     map = TMXTiledMap::create(level->getCString());
     map->setAnchorPoint(Vec2(0, 0));
 
     float map_height = map->getMapSize().height * 32;
-    float ratio = visibleSize.height / map_height;
+    float ratio = visibleHeight / map_height;
     map->setScale(ratio);
-    
    
     addChild(map);
     
-    // move the map
-//    mapAction = MoveBy::create(MOVEMENT_SPEED * visibleSize.width, Point(-visibleSize.width * 1.5, 0));
-//    map->runAction(mapAction);
-
-
     
-    // creating top and bottom obstacle layer
-    
+    // Add map layers  - conversion into sprites with physics
     auto layer = map->getLayer("Obstacles");
-    auto layerSize = layer->getLayerSize();
+    obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK);
     
-
+    layer = map->getLayer("Collection");
+    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
     
-    for (int y = 0; y < layerSize.height; y++)
-    {
-        for (int x = 0; x < layerSize.width; x++)
-        {
-
-            auto sprite = layer->getTileAt(Point(x, y));
-            if(sprite)
-            {
-                // apply collision masks and physics bodies to each sprite that is created from the tiles.
-                auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
-                spriteBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
-                spriteBody->setContactTestBitmask( true );
-                sprite->setPhysicsBody(spriteBody);
-                
-                
-                obstacle.CreateObstacle(this, sprite);
-
-                
-            }
-
-        }
-    }
-
-    // creating a collision layer
-    auto collisionLayer = map->getLayer("Collision");
-    auto collisionLayerSize = collisionLayer->getLayerSize();
-    
-    
-    
-    for (int y = 0; y < collisionLayerSize.height; y++)
-    {
-        for (int x = 0; x < collisionLayerSize.width; x++)
-        {
-            
-            auto collisionSprite = collisionLayer->getTileAt(Point(x, y));
-            if(collisionSprite)
-            {
-                // apply collision masks and physics bodies to each sprite that is created from the tiles.
-                auto collisionSpriteBody = PhysicsBody::createEdgeBox(collisionSprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
-                collisionSpriteBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
-                collisionSpriteBody->setContactTestBitmask( true );
-                collisionSprite->setPhysicsBody(collisionSpriteBody);
-                
-                
-                obstacle.CreateObstacle(this, collisionSprite);
-                
-                
-            }
-            
-        }
-    }
-
-
-    // creating a collectible layer
-    auto collectibleLayer = map->getLayer("Collectible");
-    auto collectibleLayerSize = collectibleLayer->getLayerSize();
-    
-    
-    
-    for (int y = 0; y < collectibleLayerSize.height; y++)
-    {
-        for (int x = 0; x < collectibleLayerSize.width; x++)
-        {
-            
-            auto collectionSprite = collectibleLayer->getTileAt(Point(x, y));
-            if(collectionSprite)
-            {
-                // apply collision masks and physics bodies to each sprite that is created from the tiles.
-                auto collectionSpriteBody = PhysicsBody::createEdgeBox(collectionSprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
-                collectionSpriteBody->setCollisionBitmask( 0x000004 );
-                collectionSpriteBody->setContactTestBitmask( true );
-                collectionSprite->setPhysicsBody(collectionSpriteBody);
-                
-                
-                obstacle.CreateObstacle(this, collectionSprite);
-                
-            }
-            
-        }
-    }
-
-    
-    
+    layer = map->getLayer("FinishLine");
+    obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
     
 }
 
