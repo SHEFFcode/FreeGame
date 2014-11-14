@@ -28,6 +28,8 @@
 		1EAE7B681A0ADFFE00C19600 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE7B661A0ADFFE00C19600 /* Obstacle.cpp */; };
 		1EAE7B691A0ADFFE00C19600 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1EAE7B661A0ADFFE00C19600 /* Obstacle.cpp */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		2B2232201A15885900F64C1E /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B22321E1A15885900F64C1E /* Player.cpp */; };
+		2B2232211A15885900F64C1E /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B22321E1A15885900F64C1E /* Player.cpp */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8A19C43A87006E1F66 /* SplashScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* SplashScreen.cpp */; };
@@ -124,6 +126,8 @@
 		1EAE7B661A0ADFFE00C19600 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Obstacle.cpp; sourceTree = "<group>"; };
 		1EAE7B671A0ADFFE00C19600 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2B22321E1A15885900F64C1E /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		2B22321F1A15885900F64C1E /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		46880B8619C43A87006E1F66 /* SplashScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreen.cpp; sourceTree = "<group>"; };
@@ -309,6 +313,8 @@
 				1E87C99519FF15E300C625A5 /* MainMenu.h */,
 				1EAE7B661A0ADFFE00C19600 /* Obstacle.cpp */,
 				1EAE7B671A0ADFFE00C19600 /* Obstacle.h */,
+				2B22321E1A15885900F64C1E /* Player.cpp */,
+				2B22321F1A15885900F64C1E /* Player.h */,
 				46880B8619C43A87006E1F66 /* SplashScreen.cpp */,
 				46880B8719C43A87006E1F66 /* SplashScreen.h */,
 				1E87C9AC1A01677B00C625A5 /* Stage.cpp */,
@@ -510,6 +516,7 @@
 				1E87C99F19FFF1E600C625A5 /* StageSelect.cpp in Sources */,
 				46880B8A19C43A87006E1F66 /* SplashScreen.cpp in Sources */,
 				1EAE7B521A04182E00C19600 /* GamePlay.cpp in Sources */,
+				2B2232201A15885900F64C1E /* Player.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				1EAE7B681A0ADFFE00C19600 /* Obstacle.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -524,6 +531,7 @@
 			files = (
 				1EAE7B531A04182E00C19600 /* GamePlay.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				2B2232211A15885900F64C1E /* Player.cpp in Sources */,
 				1EAE7B691A0ADFFE00C19600 /* Obstacle.cpp in Sources */,
 				1E87C99719FF15E300C625A5 /* MainMenu.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,

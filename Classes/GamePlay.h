@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Obstacle.h"
+#include "Player.h"
 
 class GamePlay : public cocos2d::Layer
 {
@@ -31,7 +32,8 @@ private:
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
     cocos2d::PhysicsWorld *sceneWorld;
-    cocos2d::Sprite *puff;
+//    cocos2d::Sprite *puff;
+    Player *puff;
     
     Obstacle obstacle;
     

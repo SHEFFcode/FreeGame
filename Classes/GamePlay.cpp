@@ -1,6 +1,7 @@
 #include "GamePlay.h"
 #include "Obstacle.h"
 #include "Definitions.h"
+#include "Player.h"
 
 USING_NS_CC;
 
@@ -59,13 +60,16 @@ bool GamePlay::init()
     // MOVE TO PUFF CLASS
     
     // create puff player
-    puff = Sprite::create("puff.png");
-    auto puffBody = PhysicsBody::createCircle(puff->getContentSize().width / 2);
-    puffBody->setCollisionBitmask( PUFF_COLLISION_BITMASK );
-    puffBody->setContactTestBitmask( true );
-    puff->setPhysicsBody(puffBody);
-    puff->setPosition(Point(visibleSize.width / 4 + origin.x, visibleSize.height / 2 + origin.y));
-    this->addChild(puff);
+//    puff = Sprite::create("puff.png");
+//    auto puffBody = PhysicsBody::createCircle(puff->getContentSize().width / 2);
+//    puffBody->setCollisionBitmask( PUFF_COLLISION_BITMASK );
+//    puffBody->setContactTestBitmask( true );
+//    puff->setPhysicsBody(puffBody);
+//    puff->setPosition(Point(visibleSize.width / 4 + origin.x, visibleSize.height / 2 + origin.y));
+   //    this->addChild(puff);
+    
+    puff = new Player(this);
+
     
     // setup physics
     auto contactListener = EventListenerPhysicsContact::create();
@@ -94,8 +98,7 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
     {
         //CCLOG("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
         if(levelStarted == 0) {
-            mapAction = MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0));
-            map->runAction(mapAction);
+            mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));            map->runAction(mapAction);
         }
         levelStarted = 1;
         
@@ -152,6 +155,7 @@ void GamePlay::Setup()
 
     float map_height = map->getMapSize().height * 32;
     float ratio = visibleHeight / map_height;
+    map->setPosition(Vec2(map->getMapSize().height * ratio, map->getMapSize().height * ratio));
     map->setScale(ratio);
    
     addChild(map);
@@ -168,6 +172,7 @@ void GamePlay::Setup()
     obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
     
 }
+
 
 
 
