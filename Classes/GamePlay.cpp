@@ -47,7 +47,7 @@ bool GamePlay::init()
     
     // setup bounding box
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-    edgeBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
+    edgeBody->setCollisionBitmask( BORDER_COLLISION_BITMASK );
     edgeBody->setContactTestBitmask( true );
     
     auto edgeNode = Node::create();
@@ -120,6 +120,7 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // Obstacle Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
+        CCLOG("Collision");
         GamePlay::stopAction(mapAction);
         
         Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
@@ -129,13 +130,15 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // Collection Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        
+        CCLOG("Collection");
+        b->setEnable(false);
     }
     
     // FinishLine Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && FINISH_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && FINISH_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        
+         CCLOG("Finish");
+        b->setEnable(false);
     }
     
     return true;
