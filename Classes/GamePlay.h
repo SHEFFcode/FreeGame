@@ -32,8 +32,8 @@ private:
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
     cocos2d::PhysicsWorld *sceneWorld;
-//    cocos2d::Sprite *puff;
-    Player *puff;
+    
+    Player *player;
     
     Obstacle obstacle;
     

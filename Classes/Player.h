@@ -6,6 +6,9 @@
 class Player
 {
 public:
+    
+    cocos2d::Sprite *puff;
+    
     Player(cocos2d::Layer *sprite);
     
     void UpdatePosition(cocos2d::Vec2 vec2);
@@ -13,7 +16,7 @@ public:
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
-    cocos2d::Sprite *puff;
+    
     
 };
 
