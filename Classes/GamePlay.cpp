@@ -81,7 +81,7 @@ bool GamePlay::init()
     touchListener->setSwallowTouches( true );
     touchListener->onTouchBegan = CC_CALLBACK_2( GamePlay::onTouchBegan, this );
     touchListener->onTouchMoved = CC_CALLBACK_2( GamePlay::onTouchMoved, this);
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, puff);
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
     
     return true;
 }
@@ -112,7 +112,7 @@ void GamePlay::onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event )
 {
     Vec2 touchPos = this->convertToWorldSpace(this->convertTouchToNodeSpace(touch));
 
-    puff->setPosition(touchPos);
+    puff->UpdatePosition(touchPos);
 }
 
 bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )

@@ -8,6 +8,7 @@ class Player
 public:
     Player(cocos2d::Layer *sprite);
     
+    void UpdatePosition(cocos2d::Vec2 vec2);
     
 private:
     cocos2d::Size visibleSize;

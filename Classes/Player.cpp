@@ -22,3 +22,8 @@ Player::Player(cocos2d::Layer *layer )
     layer->addChild(puff, 100);
 }
 
+void Player::UpdatePosition(cocos2d::Vec2 vec2)
+{
+    puff->setPosition(vec2);
+}
+
