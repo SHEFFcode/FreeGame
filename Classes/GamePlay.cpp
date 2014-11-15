@@ -155,16 +155,13 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // Collection Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && COLLECTION_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        CCLOG("Collection");
         b->setEnable(false);
         b->setContactTestBitmask(false);
-        int x = (((b->getNode()->getPosition().x)/(map->getTileSize().width))+1);
-        int y = ((((map->getMapSize().height*map->getTileSize().height) - b->getNode()->getPosition().y)/map->getTileSize().height)-1);
-        //        int x = 7;
-        //        int y = 7;
+        float mapHeight = map->getMapSize().height * 32;
+        int x = round(b->getNode()->getPosition().x / 32);
+        int y = round(( mapHeight - b->getNode()->getPosition().y) / 32 - 1);
         Point point = Point(x,y);
-        collectionLayer->removeTileAt(point);
-        CCLOG("%i, %i",  x, y);
+        map->getLayer("Collection")->removeTileAt(point);
     }
     
     // FinishLine Collision
@@ -195,11 +192,8 @@ void GamePlay::Setup()
     auto layer = map->getLayer("Obstacles");
     obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK);
     
-//    layer = map->getLayer("Collection");
-//    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
-    
-    collectionLayer = map->getLayer("Collection");
-    obstacle.CreateObstacle(this, collectionLayer, COLLECTION_COLLISION_BITMASK);
+    layer = map->getLayer("Collection");
+    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
     
     layer = map->getLayer("FinishLine");
     obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
