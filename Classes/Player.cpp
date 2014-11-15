@@ -14,7 +14,7 @@ Player::Player(cocos2d::Layer *layer, float scaleRatio)
     puff->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     
     //create a physics body that is a cirle with the radius of half the width of the ball that is flappybird sprite.
-    auto puffBody = PhysicsBody::createCircle( puff->getContentSize().width/2);
+    auto puffBody = PhysicsBody::createCircle( (puff->getContentSize().width / 2) * scaleRatio);
     puffBody->setCollisionBitmask(PUFF_COLLISION_BITMASK);
     puffBody->setContactTestBitmask(true);
     
