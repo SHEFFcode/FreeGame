@@ -90,6 +90,18 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
         if(levelStarted == 0) {
             mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));
             map->runAction(mapAction);
+            if (!enabled) {
+                // Add map layers  - conversion into sprites with physics
+                auto layer = map->getLayer("Obstacles");
+                obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK);
+                
+                layer = map->getLayer("Collection");
+                obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
+                
+                layer = map->getLayer("FinishLine");
+                obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
+            }
+            enabled++;
         }
         levelStarted = 1;
         
@@ -212,16 +224,6 @@ void GamePlay::Setup()
    
     addChild(map);
     
-    
-    // Add map layers  - conversion into sprites with physics
-    auto layer = map->getLayer("Obstacles");
-    obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK);
-    
-    layer = map->getLayer("Collection");
-    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
-    
-    layer = map->getLayer("FinishLine");
-    obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
     
      //Add score to top right of screen
     __String *tempScore = __String::createWithFormat("%i", score);

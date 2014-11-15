@@ -22,13 +22,22 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLaye
             if(sprite)
             {
                 // apply collision masks and physics bodies to each sprite that is created from the tiles.
+                
+                
                 auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
                 spriteBody->setCollisionBitmask( bitmask );
-                spriteBody->setContactTestBitmask( true );
+                spriteBody->setContactTestBitmask( false );
+                spriteBody->setEnable(false);
                 sprite->setPhysicsBody(spriteBody);
+                
+                layer->scheduleOnce( schedule_selector( Obstacle::EnableTilePhysics ), MOVEMENT_SPEED * visibleSize.width );
+                
             }
-            
         }
+        
     }
 }
 
+void Obstacle::EnableTilePhysics(float dt){
+    
+}

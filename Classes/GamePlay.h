@@ -19,6 +19,7 @@ private:
     float visibleHeight;
     unsigned int score = 0;
     unsigned int levelStarted = 0;
+    unsigned int enabled = 0;
     
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
