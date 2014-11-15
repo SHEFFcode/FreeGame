@@ -8,7 +8,7 @@ class Player
 public:
     cocos2d::Sprite *puff;
     
-    Player(cocos2d::Layer *sprite);
+    Player(cocos2d::Layer *sprite, float scaleRatio);
     
     void UpdatePosition(cocos2d::Vec2 vec2);
     

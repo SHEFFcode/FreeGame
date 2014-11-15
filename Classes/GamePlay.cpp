@@ -46,8 +46,6 @@ bool GamePlay::init()
     
     this->Setup();  // Load the stage / level
     
-    player = new Player(this);
-    
     
     // setup bounding box
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
@@ -123,6 +121,10 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
         Director::getInstance()->getEventDispatcher()->release();
         
+        a->setEnable(false);
+        a->setContactTestBitmask(false);
+        b->setEnable(false);
+        b->setContactTestBitmask(false);
         
         // add game over popover
         Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -185,6 +187,9 @@ void GamePlay::Setup()
 
     float map_height = map->getMapSize().height * 32;
     float ratio = visibleHeight / map_height;
+    
+    player = new Player(this, ratio);
+    
     map->setPosition(Vec2(map->getMapSize().height * ratio, map->getMapSize().height * ratio));
     map->setScale(ratio);
    
