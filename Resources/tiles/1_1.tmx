@@ -10,7 +10,7 @@
  </layer>
  <layer name="Collection" width="100" height="15">
   <data encoding="base64" compression="zlib">
-   eJzt0bEJAAAIA8GA++9s4wA2FsIdfJkqCQAAUNP1hh1/AADwUQMqXwAZ
+   eJzt1bEJAAAIBLEH99/ZGawUTPqrLwEAgJ9quQeACd8BuK8BcgwACg==
   </data>
  </layer>
  <layer name="FinishLine" width="100" height="15">

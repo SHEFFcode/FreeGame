@@ -40,6 +40,8 @@ private:
     
     Obstacle obstacle;
     
+    cocos2d::TMXLayer *collectionLayer;
+    
 };
 
 #endif // __STAGE__H__
