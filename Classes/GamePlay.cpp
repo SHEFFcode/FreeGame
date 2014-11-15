@@ -72,6 +72,9 @@ bool GamePlay::init()
     touchListener->onTouchMoved = CC_CALLBACK_2( GamePlay::onTouchMoved, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, player->puff
                                                              );
+    
+    scheduleUpdate();
+    
     return true;
 }
 
