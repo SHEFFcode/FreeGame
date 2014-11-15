@@ -17,7 +17,7 @@ public:
 private:
     float visibleWidth;
     float visibleHeight;
-    
+    unsigned int score = 0;
     unsigned int levelStarted = 0;
     
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
@@ -35,6 +35,7 @@ private:
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
     cocos2d::PhysicsWorld *sceneWorld;
+    cocos2d::Label *scoreLabel;
     
     Player *player;
     

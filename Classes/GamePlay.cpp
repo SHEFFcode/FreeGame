@@ -108,6 +108,8 @@ void GamePlay::onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event )
 
 bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
 {
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
     PhysicsBody *a = contact.getShapeA()->getBody();
     PhysicsBody *b = contact.getShapeB()->getBody();
     
@@ -127,8 +129,6 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         b->setContactTestBitmask(false);
         
         // add game over popover
-        Size visibleSize = Director::getInstance()->getVisibleSize();
-        
         auto popover = Node::create();
         popover->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
         
@@ -162,18 +162,35 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     {
         b->setEnable(false);
         b->setContactTestBitmask(false);
+        
+        // Remove tile
         float mapHeight = map->getMapSize().height * 32;
         int x = round(b->getNode()->getPosition().x / 32);
         int y = round(( mapHeight - b->getNode()->getPosition().y) / 32 - 1);
         Point point = Point(x,y);
         map->getLayer("Collection")->removeTileAt(point);
+        
+        // Change score
+        score++;
+        __String *tempScore = __String::createWithFormat("%i", score);
+        scoreLabel->setString(tempScore->getCString());
     }
     
     // FinishLine Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && FINISH_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && FINISH_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-         CCLOG("Finish");
+        // remove all touch events
+        Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+        Director::getInstance()->getEventDispatcher()->release();
+        
+        a->setEnable(false);
+        a->setContactTestBitmask(false);
         b->setEnable(false);
+        b->setContactTestBitmask(false);
+        
+        auto finishingMove = MoveBy::create(MOVEMENT_SPEED * (visibleWidth / 2), Point(visibleWidth / 2 - player->puff->getPositionX(), visibleHeight / 2 - player->puff->getPositionY()));
+        
+        player->puff->runAction(finishingMove);
     }
     
     return true;
@@ -205,6 +222,15 @@ void GamePlay::Setup()
     
     layer = map->getLayer("FinishLine");
     obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
+    
+     //Add score to top right of screen
+    __String *tempScore = __String::createWithFormat("%i", score);
+
+    scoreLabel = Label::createWithTTF( tempScore->getCString(), "Action Man.ttf", visibleHeight * 0.1);
+    scoreLabel->setColor(Color3B::WHITE);
+    scoreLabel->setPosition(Point(visibleWidth - (scoreLabel->getContentSize().width / 2) - 10, visibleHeight - (scoreLabel->getContentSize().height / 2) - 10));
+
+    this->addChild(scoreLabel,1000);
     
 }
 
