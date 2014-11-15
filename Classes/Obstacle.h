@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-class Obstacle
+class Obstacle : public cocos2d::Node
 {
 public:
     Obstacle();
@@ -13,6 +13,7 @@ public:
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
+    
     void EnableTilePhysics(float dt);
     
 };

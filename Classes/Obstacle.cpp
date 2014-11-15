@@ -30,8 +30,7 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLaye
                 spriteBody->setEnable(false);
                 sprite->setPhysicsBody(spriteBody);
                 
-                layer->scheduleOnce( schedule_selector( Obstacle::EnableTilePhysics ), MOVEMENT_SPEED * visibleSize.width );
-                
+                layer->scheduleOnce(schedule_selector(Obstacle::EnableTilePhysics), 10);
             }
         }
         
@@ -41,3 +40,17 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLaye
 void Obstacle::EnableTilePhysics(float dt){
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
