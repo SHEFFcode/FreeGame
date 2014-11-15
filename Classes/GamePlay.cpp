@@ -2,6 +2,7 @@
 #include "Obstacle.h"
 #include "Definitions.h"
 #include "Player.h"
+#include "MainMenu.h"
 
 USING_NS_CC;
 
@@ -58,7 +59,6 @@ bool GamePlay::init()
     edgeNode->setPhysicsBody(edgeBody);
     
     this->addChild(edgeNode);
-
     
     // setup physics
     auto contactListener = EventListenerPhysicsContact::create();
@@ -87,7 +87,8 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
     {
         //CCLOG("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
         if(levelStarted == 0) {
-            mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));            map->runAction(mapAction);
+            mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));
+            map->runAction(mapAction);
         }
         levelStarted = 1;
         
@@ -112,11 +113,43 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // Obstacle Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        CCLOG("Collision");
+        // stops all movement
         GamePlay::stopAction(mapAction);
         
+        // remove all touch events
         Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
         Director::getInstance()->getEventDispatcher()->release();
+        
+        
+        // add game over popover
+        Size visibleSize = Director::getInstance()->getVisibleSize();
+        
+        auto popover = Node::create();
+        popover->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+        
+        auto background = Sprite::create("red.jpg", Rect(100, 100, visibleSize.width - 200, visibleSize.height - 200));
+        background->setOpacity(0);
+        auto reveal = FadeIn::create(1);
+        background->runAction(reveal);
+        
+        popover->addChild(background);
+        
+        auto replay = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(GamePlay::GoToReplayLevel, this));
+        replay->setPosition(Point(visibleSize.width / 2 - 100, visibleSize.height / 2));
+
+        auto mainMenu = MenuItemImage::create("options.png", "options.png", CC_CALLBACK_1(GamePlay::GoToMainMenu, this));
+        mainMenu->setPosition(Point(visibleSize.width / 2 - 100, (visibleSize.height / 2) - 210));
+        
+        auto menu = Menu::create(replay, mainMenu, NULL);
+        menu->setPosition(Point::ZERO);
+        menu->setOpacity(0);
+        auto reveal2 = FadeIn::create(1);
+        menu->runAction(reveal2);
+        
+        background->addChild(menu);
+
+        
+        this->addChild(popover, 10000);
     }
     
     // Collection Collision
@@ -162,6 +195,19 @@ void GamePlay::Setup()
     
 }
 
+void GamePlay::GoToMainMenu(cocos2d::Ref *sender)
+{
+    auto scene = MainMenu::createScene();
+    
+    Director::getInstance()->replaceScene(scene);
+}
+
+void GamePlay::GoToReplayLevel(cocos2d::Ref *sender)
+{
+    auto scene = GamePlay::createScene(stageLoaded, levelLoaded);
+    
+    Director::getInstance()->replaceScene(scene);
+}
 
 
 

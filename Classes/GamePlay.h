@@ -29,6 +29,9 @@ private:
     
     void Setup();
     
+    void GoToReplayLevel(cocos2d::Ref *sender);
+    void GoToMainMenu(cocos2d::Ref *sender);
+    
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
     cocos2d::PhysicsWorld *sceneWorld;

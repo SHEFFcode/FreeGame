@@ -6,7 +6,6 @@
 class Player
 {
 public:
-    
     cocos2d::Sprite *puff;
     
     Player(cocos2d::Layer *sprite);
