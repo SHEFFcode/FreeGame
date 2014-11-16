@@ -64,7 +64,7 @@ bool GamePlay::init()
     // Physics variables
     numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
     numTilesPhysicsStart = numTilesPhysics;
-    numTilesPhysicsMoved = (visibleWidth / ((map_width * ratio) / map->getMapSize().width)) * 1.5;
+    numTilesPhysicsMoved = (visibleWidth / ((map_width * ratio) / map->getMapSize().width) + 1) * 1.5;
     
     
     // Add map layers  - conversion into sprites with physics

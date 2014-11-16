@@ -15,7 +15,7 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLaye
 
     for (int y = 0; y < layerSize.height; y++)
     {
-        for (int x = 0; x < numTiles; x++)
+        for (int x = 0; x < layerSize.width; x++)
         {
             auto sprite = mapLayer->getTileAt(Point(x, y));
             if(sprite)
@@ -23,7 +23,17 @@ void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLaye
                 auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
                 spriteBody->setCollisionBitmask( bitmask );
                 spriteBody->setContactTestBitmask( true );
+                spriteBody->setEnable(false);
                 sprite->setPhysicsBody(spriteBody);
+            }
+        }
+        
+        for (int x = 0; x < numTiles; x++)
+        {
+            auto sprite = mapLayer->getTileAt(Point(x, y));
+            if(sprite)
+            {
+                sprite->getPhysicsBody()->setEnable(true);
             }
         }
         
@@ -39,10 +49,7 @@ void Obstacle:: EnableTiles( cocos2d::TMXLayer *mapLayer, unsigned int bitmask, 
         auto sprite = mapLayer->getTileAt(Point(x, y));
         if(sprite)
         {
-            auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
-            spriteBody->setCollisionBitmask( bitmask );
-            spriteBody->setContactTestBitmask( true );
-            sprite->setPhysicsBody(spriteBody);
+            sprite->getPhysicsBody()->setEnable(true);
         }
     }
 
@@ -57,7 +64,7 @@ void Obstacle::RemoveTiles( cocos2d::TMXLayer *mapLayer, unsigned int x )
         auto sprite = mapLayer->getTileAt(Point(x, y));
         if(sprite)
         {
-            sprite->setPhysicsBody(nullptr);
+            sprite->getPhysicsBody()->setEnable(false);
         }
     }
 
