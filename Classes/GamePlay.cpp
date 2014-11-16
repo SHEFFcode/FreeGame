@@ -15,7 +15,7 @@ Scene* GamePlay::createScene(unsigned int stageRef, unsigned int levelRef)
     
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     scene->getPhysicsWorld()->setGravity(Vect(0,0));
     
     // 'layer' is an autorelease object
@@ -292,6 +292,16 @@ void GamePlay::RemoveTilePhysics(float dt)
         unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
     }
 
+}
+
+void GamePlay::update( float dt )
+{
+    // use fixed time and calculate 3 times per frame makes physics simulate more precisely.
+    for (int i = 0; i < 3; ++i)
+    {
+        sceneWorld->setAutoStep(false);
+        sceneWorld->step(1/180.0f);
+    }
 }
 
 
