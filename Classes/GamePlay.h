@@ -17,13 +17,13 @@ public:
 private:
     float visibleWidth;
     float visibleHeight;
+    float numTilesPhysicsMoved;
     unsigned int score = 0;
     unsigned int levelStarted = 0;
     unsigned int enabled = 0;
     unsigned int numTilesPhysics = 0;
     unsigned int numTilesPhysicsStart = 0;
     unsigned int numTilesPhysicsRemovalKey = 0;
-    float numTilesPhysicsMoved;
     
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
@@ -31,9 +31,6 @@ private:
     bool onContactBegin( cocos2d::PhysicsContact &contact );
     
     void SetPhysicsWorld( cocos2d::PhysicsWorld *world ){ sceneWorld = world; };
-    
-    void Setup();
-    
     void GoToReplayLevel(cocos2d::Ref *sender);
     void GoToMainMenu(cocos2d::Ref *sender);
     void EnableTilePhysics( float dt );

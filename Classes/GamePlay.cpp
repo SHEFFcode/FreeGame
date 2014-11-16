@@ -44,8 +44,48 @@ bool GamePlay::init()
     visibleHeight = visibleSize.height;
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    this->Setup();  // Load the stage / level
+    // Add map
+    __String *level = __String::createWithFormat("tiles/%i_%i.tmx", stageLoaded,levelLoaded);
+    map = TMXTiledMap::create(level->getCString());
+    map->setAnchorPoint(Vec2(0, 0));
     
+    float map_height = map->getMapSize().height * 32;
+    float map_width = map->getMapSize().width * 32;
+    float ratio = visibleHeight / map_height;
+    
+    player = new Player(this, ratio);
+    
+    map->setPosition(Vec2(map->getMapSize().height * ratio, map->getMapSize().height * ratio));
+    map->setScale(ratio);
+    
+    addChild(map);
+    
+    
+    // Physics variables
+    numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
+    numTilesPhysicsStart = numTilesPhysics;
+    numTilesPhysicsMoved = (visibleWidth / ((map_width * ratio) / map->getMapSize().width)) * 1.5;
+    
+    
+    // Add map layers  - conversion into sprites with physics
+    auto layer = map->getLayer("Obstacles");
+    obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("Collection");
+    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("FinishLine");
+    obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK, numTilesPhysics);
+    
+    
+    // Add score to top right of screen
+    __String *tempScore = __String::createWithFormat("%i", score);
+    
+    scoreLabel = Label::createWithTTF( tempScore->getCString(), "Action Man.ttf", visibleHeight * 0.1);
+    scoreLabel->setColor(Color3B::WHITE);
+    scoreLabel->setPosition(Point(visibleWidth - (scoreLabel->getContentSize().width / 2) - 10, visibleHeight - (scoreLabel->getContentSize().height / 2) - 10));
+    
+    this->addChild(scoreLabel,1000);
     
     // setup bounding box
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
@@ -201,49 +241,6 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     }
     
     return true;
-}
-
-void GamePlay::Setup()
-{
-    __String *level = __String::createWithFormat("tiles/%i_%i.tmx", stageLoaded,levelLoaded);
-    map = TMXTiledMap::create(level->getCString());
-    map->setAnchorPoint(Vec2(0, 0));
-
-    float map_height = map->getMapSize().height * 32;
-    float map_width = map->getMapSize().width * 32;
-    float ratio = visibleHeight / map_height;
-    
-    player = new Player(this, ratio);
-    
-    map->setPosition(Vec2(map->getMapSize().height * ratio, map->getMapSize().height * ratio));
-    map->setScale(ratio);
-   
-    addChild(map);
-    
-    numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
-    numTilesPhysicsStart = numTilesPhysics;
-    numTilesPhysicsMoved = (visibleWidth / ((map_width * ratio) / map->getMapSize().width)) * 1.5;
-    
-    // Add map layers  - conversion into sprites with physics
-    auto layer = map->getLayer("Obstacles");
-    obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK, numTilesPhysics);
-    
-    layer = map->getLayer("Collection");
-    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK, numTilesPhysics);
-    
-    layer = map->getLayer("FinishLine");
-    obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK, numTilesPhysics);
-    
-    
-     //Add score to top right of screen
-    __String *tempScore = __String::createWithFormat("%i", score);
-
-    scoreLabel = Label::createWithTTF( tempScore->getCString(), "Action Man.ttf", visibleHeight * 0.1);
-    scoreLabel->setColor(Color3B::WHITE);
-    scoreLabel->setPosition(Point(visibleWidth - (scoreLabel->getContentSize().width / 2) - 10, visibleHeight - (scoreLabel->getContentSize().height / 2) - 10));
-
-    this->addChild(scoreLabel,1000);
-    
 }
 
 void GamePlay::GoToMainMenu(cocos2d::Ref *sender)
