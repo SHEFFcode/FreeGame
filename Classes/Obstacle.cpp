@@ -48,13 +48,20 @@ void Obstacle:: EnableTiles( cocos2d::TMXLayer *mapLayer, unsigned int bitmask, 
 
 }
 
+void Obstacle::RemoveTiles( cocos2d::TMXLayer *mapLayer, unsigned int x )
+{
+    auto layerSize = mapLayer->getLayerSize();
+    
+    for (int y = 0; y < layerSize.height; y++)
+    {
+        auto sprite = mapLayer->getTileAt(Point(x, y));
+        if(sprite)
+        {
+            sprite->setPhysicsBody(nullptr);
+        }
+    }
 
-// CCASSERT(pos.x < _layerSize.width && pos.y < _layerSize.height && pos.x >=0 && pos.y >=0, "TMXLayer: invalid position");
-
-
-
-
-
+}
 
 
 

@@ -10,6 +10,7 @@ public:
     
     void CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int x);
     void EnableTiles( cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int numTiles );
+    void RemoveTiles( cocos2d::TMXLayer *mapLayer, unsigned int x );
     
 private:
     cocos2d::Size visibleSize;

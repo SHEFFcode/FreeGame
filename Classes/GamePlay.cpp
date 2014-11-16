@@ -86,16 +86,19 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
     
     if (rect.containsPoint(locationInNode))
     {
-        if(levelStarted == 0) {
+        if(!levelStarted) {
             mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));
             map->runAction(mapAction);
             // time = distance / speed
             if (!enabled) {
                 this->schedule(schedule_selector(GamePlay::EnableTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
             }
+            if(numTilesPhysicsStart + 5 == numTilesPhysics){
+                this->schedule(schedule_selector(GamePlay::RemoveTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
+            }
             enabled++;
         }
-        levelStarted = 1;
+        levelStarted++;
         
         return true;
     }
@@ -218,6 +221,7 @@ void GamePlay::Setup()
     addChild(map);
     
     numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
+    numTilesPhysicsStart = numTilesPhysics;
     numTilesPhysicsMoved = round((visibleWidth / ((map_width * ratio) / map->getMapSize().width) + 1) * 1.5);
     
     // Add map layers  - conversion into sprites with physics
@@ -258,8 +262,6 @@ void GamePlay::GoToReplayLevel(cocos2d::Ref *sender)
 
 void GamePlay::EnableTilePhysics( float dt )
 {
-    CCLOG("numTile: %i", numTilesPhysics);
-    
     auto layer = map->getLayer("Obstacles");
     obstacle.EnableTiles(layer, OBSTACLE_COLLISION_BITMASK, numTilesPhysics);
     
@@ -276,7 +278,24 @@ void GamePlay::EnableTilePhysics( float dt )
     }
 }
 
+void GamePlay::RemoveTilePhysics(float dt)
+{
+    auto layer = map->getLayer("Obstacles");
+    obstacle.RemoveTiles(layer, numTilesPhysicsRemovalKey);
+    
+    layer = map->getLayer("Collection");
+    obstacle.RemoveTiles(layer, numTilesPhysicsRemovalKey);
+    
+    layer = map->getLayer("FinishLine");
+    obstacle.RemoveTiles(layer, numTilesPhysicsRemovalKey);
+    
+    numTilesPhysicsRemovalKey++;
+    
+    if(numTilesPhysics == map->getMapSize().width){
+        unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
+    }
 
+}
 
 
 
