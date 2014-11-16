@@ -9,37 +9,47 @@ Obstacle::Obstacle()
     origin = Director::getInstance()->getVisibleOrigin();
 }
 
-void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask)
+void Obstacle::CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int numTiles)
 {
     auto layerSize = mapLayer->getLayerSize();
-    
+
     for (int y = 0; y < layerSize.height; y++)
     {
-        for (int x = 0; x < layerSize.width; x++)
+        for (int x = 0; x < numTiles; x++)
         {
-            
             auto sprite = mapLayer->getTileAt(Point(x, y));
             if(sprite)
             {
-                // apply collision masks and physics bodies to each sprite that is created from the tiles.
-                
-                
                 auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
                 spriteBody->setCollisionBitmask( bitmask );
-                spriteBody->setContactTestBitmask( false );
-                spriteBody->setEnable(false);
+                spriteBody->setContactTestBitmask( true );
                 sprite->setPhysicsBody(spriteBody);
-                
-                layer->scheduleOnce(schedule_selector(Obstacle::EnableTilePhysics), 10);
             }
         }
         
     }
 }
 
-void Obstacle::EnableTilePhysics(float dt){
+void Obstacle:: EnableTiles( cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int x )
+{
+    auto layerSize = mapLayer->getLayerSize();
     
+    for (int y = 0; y < layerSize.height; y++)
+    {
+        auto sprite = mapLayer->getTileAt(Point(x, y));
+        if(sprite)
+        {
+            auto spriteBody = PhysicsBody::createEdgeBox(sprite->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 1);
+            spriteBody->setCollisionBitmask( bitmask );
+            spriteBody->setContactTestBitmask( true );
+            sprite->setPhysicsBody(spriteBody);
+        }
+    }
+
 }
+
+
+// CCASSERT(pos.x < _layerSize.width && pos.y < _layerSize.height && pos.x >=0 && pos.y >=0, "TMXLayer: invalid position");
 
 
 

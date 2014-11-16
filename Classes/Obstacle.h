@@ -3,18 +3,17 @@
 
 #include "cocos2d.h"
 
-class Obstacle : public cocos2d::Node
+class Obstacle
 {
 public:
     Obstacle();
     
-    void CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask);
+    void CreateObstacle( cocos2d::Layer *layer, cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int x);
+    void EnableTiles( cocos2d::TMXLayer *mapLayer, unsigned int bitmask, unsigned int numTiles );
     
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
-    
-    void EnableTilePhysics(float dt);
     
 };
 

@@ -20,6 +20,8 @@ private:
     unsigned int score = 0;
     unsigned int levelStarted = 0;
     unsigned int enabled = 0;
+    unsigned int numTilesPhysics = 0;
+    unsigned int numTilesPhysicsMoved;
     
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );
@@ -32,6 +34,7 @@ private:
     
     void GoToReplayLevel(cocos2d::Ref *sender);
     void GoToMainMenu(cocos2d::Ref *sender);
+    void EnableTilePhysics( float dt );
     
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;

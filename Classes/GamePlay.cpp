@@ -86,20 +86,12 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
     
     if (rect.containsPoint(locationInNode))
     {
-        //CCLOG("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
         if(levelStarted == 0) {
             mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));
             map->runAction(mapAction);
+            // time = distance / speed
             if (!enabled) {
-                // Add map layers  - conversion into sprites with physics
-                auto layer = map->getLayer("Obstacles");
-                obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK);
-                
-                layer = map->getLayer("Collection");
-                obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK);
-                
-                layer = map->getLayer("FinishLine");
-                obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK);
+                this->schedule(schedule_selector(GamePlay::EnableTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
             }
             enabled++;
         }
@@ -215,6 +207,7 @@ void GamePlay::Setup()
     map->setAnchorPoint(Vec2(0, 0));
 
     float map_height = map->getMapSize().height * 32;
+    float map_width = map->getMapSize().width * 32;
     float ratio = visibleHeight / map_height;
     
     player = new Player(this, ratio);
@@ -223,6 +216,19 @@ void GamePlay::Setup()
     map->setScale(ratio);
    
     addChild(map);
+    
+    numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
+    numTilesPhysicsMoved = round((visibleWidth / ((map_width * ratio) / map->getMapSize().width) + 1) * 1.5);
+    
+    // Add map layers  - conversion into sprites with physics
+    auto layer = map->getLayer("Obstacles");
+    obstacle.CreateObstacle(this, layer, OBSTACLE_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("Collection");
+    obstacle.CreateObstacle(this, layer, COLLECTION_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("FinishLine");
+    obstacle.CreateObstacle(this, layer, FINISH_COLLISION_BITMASK, numTilesPhysics);
     
     
      //Add score to top right of screen
@@ -249,6 +255,27 @@ void GamePlay::GoToReplayLevel(cocos2d::Ref *sender)
     
     Director::getInstance()->replaceScene(scene);
 }
+
+void GamePlay::EnableTilePhysics( float dt )
+{
+    CCLOG("numTile: %i", numTilesPhysics);
+    
+    auto layer = map->getLayer("Obstacles");
+    obstacle.EnableTiles(layer, OBSTACLE_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("Collection");
+    obstacle.EnableTiles(layer, COLLECTION_COLLISION_BITMASK, numTilesPhysics);
+    
+    layer = map->getLayer("FinishLine");
+    obstacle.EnableTiles(layer, FINISH_COLLISION_BITMASK, numTilesPhysics);
+    
+    numTilesPhysics++;
+    
+    if(numTilesPhysics == map->getMapSize().width){
+        unschedule(schedule_selector(GamePlay::EnableTilePhysics));
+    }
+}
+
 
 
 
