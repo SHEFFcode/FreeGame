@@ -22,8 +22,8 @@ private:
     unsigned int enabled = 0;
     unsigned int numTilesPhysics = 0;
     unsigned int numTilesPhysicsStart = 0;
-    unsigned int numTilesPhysicsMoved;
     unsigned int numTilesPhysicsRemovalKey = 0;
+    float numTilesPhysicsMoved;
     
     bool onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event );
     void onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *event );

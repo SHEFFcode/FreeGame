@@ -222,7 +222,7 @@ void GamePlay::Setup()
     
     numTilesPhysics = round(visibleWidth / ((map_width * ratio) / map->getMapSize().width)) + 5;
     numTilesPhysicsStart = numTilesPhysics;
-    numTilesPhysicsMoved = round((visibleWidth / ((map_width * ratio) / map->getMapSize().width) + 1) * 1.5);
+    numTilesPhysicsMoved = (visibleWidth / ((map_width * ratio) / map->getMapSize().width)) * 1.5;
     
     // Add map layers  - conversion into sprites with physics
     auto layer = map->getLayer("Obstacles");
