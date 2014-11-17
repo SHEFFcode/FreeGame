@@ -15,7 +15,7 @@ Scene* GamePlay::createScene(unsigned int stageRef, unsigned int levelRef)
     
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     scene->getPhysicsWorld()->setGravity(Vect(0,0));
     
     // 'layer' is an autorelease object
@@ -111,8 +111,6 @@ bool GamePlay::init()
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, player->puff
                                                              );
     
-    scheduleUpdate();
-    
     return true;
 }
 
@@ -129,12 +127,9 @@ bool GamePlay::onTouchBegan( cocos2d::Touch *touch, cocos2d::Event *event )
         if(!levelStarted) {
             mapAction = RepeatForever::create(MoveBy::create(MOVEMENT_SPEED * visibleWidth, Point(-visibleWidth * 1.5, 0)));
             map->runAction(mapAction);
-            // time = distance / speed
+            
             if (!enabled) {
                 this->schedule(schedule_selector(GamePlay::EnableTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
-            }
-            if(numTilesPhysicsStart + 5 == numTilesPhysics){
-                this->schedule(schedule_selector(GamePlay::RemoveTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
             }
             enabled++;
         }
@@ -273,6 +268,10 @@ void GamePlay::EnableTilePhysics( float dt )
     if(numTilesPhysics == map->getMapSize().width){
         unschedule(schedule_selector(GamePlay::EnableTilePhysics));
     }
+    
+    if(numTilesPhysicsStart + 5 == numTilesPhysics){
+        this->schedule(schedule_selector(GamePlay::RemoveTilePhysics), (MOVEMENT_SPEED * visibleWidth) / numTilesPhysicsMoved);
+    }
 }
 
 void GamePlay::RemoveTilePhysics(float dt)
@@ -290,17 +289,6 @@ void GamePlay::RemoveTilePhysics(float dt)
     
     if(numTilesPhysics == map->getMapSize().width){
         unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
-    }
-
-}
-
-void GamePlay::update( float dt )
-{
-    // use fixed time and calculate 3 times per frame makes physics simulate more precisely.
-    for (int i = 0; i < 3; ++i)
-    {
-        sceneWorld->setAutoStep(false);
-        sceneWorld->step(1/180.0f);
     }
 }
 

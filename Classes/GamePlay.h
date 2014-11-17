@@ -35,8 +35,7 @@ private:
     void GoToMainMenu(cocos2d::Ref *sender);
     void EnableTilePhysics( float dt );
     void RemoveTilePhysics( float dt );
-    void update ( float dt );
-    
+
     cocos2d::Action *mapAction;
     cocos2d::TMXTiledMap *map;
     cocos2d::PhysicsWorld *sceneWorld;
