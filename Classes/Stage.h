@@ -21,6 +21,8 @@ private:
     void GoToLevels1( cocos2d::Ref *sender );
     void GoToLevels2( cocos2d::Ref *sender );
     void GoToLevels3( cocos2d::Ref *sender );
+    cocos2d::Sprite *level;
+
 };
 
 #endif // __STAGE__H__

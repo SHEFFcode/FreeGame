@@ -38,6 +38,7 @@ bool Stage::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
+    
     Vector<MenuItem*> menuArray(20);
     
     auto size = (visibleSize.width * 0.8 - 240) / 5;
@@ -56,11 +57,26 @@ bool Stage::init()
             }
             __String *levelNum = __String::createWithFormat("%i", ((i + 1) + (j * 5)) + (levelSet * 15) );
             
-            auto level = Sprite::create("red.jpg", Rect(xStart, yStart, size, size));
+            int levelInt = (((i + 1) + (j * 5)) + (levelSet * 15))-1;
+            
+            std::vector <bool> unlockStage (45);
+            unlockStage [0] = (true);
+            unlockStage [1] = (true);
+            
+            if (unlockStage.at(levelInt) == true){
+                
+                
+                level = Sprite::create("blue.jpg", Rect(xStart, yStart, size, size));
+            } else {
+                level = Sprite::create("red.jpg", Rect(xStart, yStart, size, size));
+            }
+            
+            
             auto item = MenuItemSprite::create(level, level, level, CC_CALLBACK_1(Stage::GoToGamePlay, this));
             item->setPosition(Point(xStart + ( size / 2), yStart + ( size / 2)));
             item->setTag( ((i + 1) + (j * 5)) + (levelSet * 15) );
             menuArray.insert(i, item);
+            
             
             auto num = Label::createWithTTF(levelNum->getCString(), "Action Man.ttf", visibleSize.height * 0.05 );
             num->setColor(Color3B::WHITE);
