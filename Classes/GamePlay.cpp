@@ -109,7 +109,7 @@ bool GamePlay::init()
     touchListener->onTouchBegan = CC_CALLBACK_2( GamePlay::onTouchBegan, this );
     touchListener->onTouchMoved = CC_CALLBACK_2( GamePlay::onTouchMoved, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, player->puff
-                                                             );
+                                                            );
     
     return true;
 }
@@ -158,19 +158,24 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // Obstacle Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        // stops all movement
+        // Stop all movement
         GamePlay::stopAction(mapAction);
         
-        // remove all touch events
+        // Remove all Touch events
         Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
         Director::getInstance()->getEventDispatcher()->release();
         
+        // Disable Physics
         a->setEnable(false);
         a->setContactTestBitmask(false);
         b->setEnable(false);
         b->setContactTestBitmask(false);
         
-        // add game over popover
+        // Unschedule Tiles
+        unschedule(schedule_selector(GamePlay::EnableTilePhysics));
+        unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
+        
+        // Add game over popover
         auto popover = Node::create();
         popover->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
         
@@ -184,7 +189,7 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         auto replay = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(GamePlay::GoToReplayLevel, this));
         replay->setPosition(Point(visibleSize.width / 2 - 100, visibleSize.height / 2));
 
-        auto mainMenu = MenuItemImage::create("options.png", "options.png", CC_CALLBACK_1(GamePlay::GoToMainMenu, this));
+        auto mainMenu = MenuItemImage::create("main_menu.png", "main_menu.png", CC_CALLBACK_1(GamePlay::GoToMainMenu, this));
         mainMenu->setPosition(Point(visibleSize.width / 2 - 100, (visibleSize.height / 2) - 210));
         
         auto menu = Menu::create(replay, mainMenu, NULL);
@@ -221,26 +226,52 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
     // FinishLine Collision
     if( ( PUFF_COLLISION_BITMASK == a->getCollisionBitmask() && FINISH_COLLISION_BITMASK == b->getCollisionBitmask() ) || (PUFF_COLLISION_BITMASK == b->getCollisionBitmask() && FINISH_COLLISION_BITMASK == a->getCollisionBitmask() ) )
     {
-        // remove all touch events
+        // Remove all Touch events
         Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
         Director::getInstance()->getEventDispatcher()->release();
         
+        // Disable Physics
         a->setEnable(false);
         a->setContactTestBitmask(false);
         b->setEnable(false);
         b->setContactTestBitmask(false);
         
+        // Unschedule Tiles
+        unschedule(schedule_selector(GamePlay::EnableTilePhysics));
+        unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
+        
+        // Move puff to center
         auto finishingMove = MoveBy::create(MOVEMENT_SPEED * (visibleWidth / 2), Point(visibleWidth / 2 - player->puff->getPositionX(), visibleHeight / 2 - player->puff->getPositionY()));
         
         player->puff->runAction(finishingMove);
+        
+        // Add score and menu options
+        auto nextLevel = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(GamePlay::GoToNextLevel, this));
+        nextLevel->setPosition(Point(visibleWidth / 2, visibleHeight * 0.4));
+        
+        auto replay = MenuItemImage::create("play.png", "play.png", CC_CALLBACK_1(GamePlay::GoToReplayLevel, this));
+        replay->setPosition(Point(visibleWidth / 2, visibleHeight * 0.25));
+        
+        auto mainMenu = MenuItemImage::create("main_menu.png", "main_menu.png", CC_CALLBACK_1(GamePlay::GoToMainMenu, this));
+        mainMenu->setPosition(Point(visibleWidth / 2, visibleHeight * 0.1));
+        
+        auto menu = Menu::create(nextLevel, replay, mainMenu, NULL);
+        menu->setPosition(Point::ZERO);
+        menu->setOpacity(0);
+        auto reveal2 = FadeIn::create(1);
+        menu->runAction(reveal2);
+        
+        this->addChild(menu);
+        
+        // Unlock next level  ****************  ADD HERE  *****************
     }
     
     return true;
 }
 
-void GamePlay::GoToMainMenu(cocos2d::Ref *sender)
+void GamePlay::GoToNextLevel(cocos2d::Ref *sender)
 {
-    auto scene = MainMenu::createScene();
+    auto scene = GamePlay::createScene(stageLoaded, levelLoaded + 1);
     
     Director::getInstance()->replaceScene(scene);
 }
@@ -248,6 +279,13 @@ void GamePlay::GoToMainMenu(cocos2d::Ref *sender)
 void GamePlay::GoToReplayLevel(cocos2d::Ref *sender)
 {
     auto scene = GamePlay::createScene(stageLoaded, levelLoaded);
+    
+    Director::getInstance()->replaceScene(scene);
+}
+
+void GamePlay::GoToMainMenu(cocos2d::Ref *sender)
+{
+    auto scene = MainMenu::createScene();
     
     Director::getInstance()->replaceScene(scene);
 }
@@ -291,7 +329,6 @@ void GamePlay::RemoveTilePhysics(float dt)
         unschedule(schedule_selector(GamePlay::RemoveTilePhysics));
     }
 }
-
 
 
 

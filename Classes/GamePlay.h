@@ -31,6 +31,7 @@ private:
     bool onContactBegin( cocos2d::PhysicsContact &contact );
     
     void SetPhysicsWorld( cocos2d::PhysicsWorld *world ){ sceneWorld = world; };
+    void GoToNextLevel(cocos2d::Ref *sender);
     void GoToReplayLevel(cocos2d::Ref *sender);
     void GoToMainMenu(cocos2d::Ref *sender);
     void EnableTilePhysics( float dt );
