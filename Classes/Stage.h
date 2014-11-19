@@ -15,12 +15,16 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(Stage);
     
+    std::vector <bool> unlockStage;
+
+    
 private:
     void GoToGamePlay( cocos2d::Ref *sender );
     void GoToStageSelect( cocos2d::Ref *sender );
     void GoToLevels1( cocos2d::Ref *sender );
     void GoToLevels2( cocos2d::Ref *sender );
     void GoToLevels3( cocos2d::Ref *sender );
+    
     cocos2d::Sprite *level;
 
 };

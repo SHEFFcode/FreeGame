@@ -13,7 +13,7 @@ public:
     virtual bool init();
     
     CREATE_FUNC(GamePlay);
-    
+            
 private:
     float visibleWidth;
     float visibleHeight;

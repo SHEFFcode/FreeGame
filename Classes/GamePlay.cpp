@@ -3,6 +3,9 @@
 #include "Definitions.h"
 #include "Player.h"
 #include "MainMenu.h"
+#include "Stage.h"
+#include "CCUserDefault.h"
+
 
 USING_NS_CC;
 
@@ -263,7 +266,18 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         
         this->addChild(menu);
         
-        // Unlock next level  ****************  ADD HERE  *****************
+        // Unlock next level
+        
+        auto unlockLevel = UserDefault::getInstance();
+        
+        auto maxLevel = unlockLevel->getIntegerForKey("Max Level", 0);
+        
+        if (levelLoaded > maxLevel){
+            maxLevel=levelLoaded+1;
+            unlockLevel->setIntegerForKey("Max Level", maxLevel);
+            unlockLevel->flush();
+        }
+
     }
     
     return true;

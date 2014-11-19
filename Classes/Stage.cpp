@@ -2,10 +2,13 @@
 #include "StageSelect.h"
 #include "GamePlay.h"
 #include "Definitions.h"
+#include "GamePlay.h"
+#include "CCUserDefault.h"
 
 USING_NS_CC;
 
 unsigned int stageNum, levelSet;
+
 
 Scene* Stage::createScene( unsigned int stageRef, unsigned int levelRef)
 {
@@ -59,9 +62,17 @@ bool Stage::init()
             
             int levelInt = (((i + 1) + (j * 5)) + (levelSet * 15))-1;
             
-            std::vector <bool> unlockStage (45);
-            unlockStage [0] = (true);
-            unlockStage [1] = (true);
+            // stage unlocking code
+            
+            unlockStage = std::vector <bool> (45);
+            
+//            unlockStage [0] = (true);
+            
+            int maxLevel = UserDefault::getInstance()->getIntegerForKey("Max Level", 1);
+            for (int l=0; l<maxLevel; l++) {
+                unlockStage [l] = (true);
+            }
+
             
             if (unlockStage.at(levelInt) == true){
                 
