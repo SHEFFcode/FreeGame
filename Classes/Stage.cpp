@@ -58,30 +58,31 @@ bool Stage::init()
             {
                 yStart = yStart - size - 40;
             }
+            
             __String *levelNum = __String::createWithFormat("%i", ((i + 1) + (j * 5)) + (levelSet * 15) );
             
             int levelInt = (((i + 1) + (j * 5)) + (levelSet * 15))-1;
             
             // stage unlocking code
             
+            for (int s=0; s<10; s++) {
+            maxLevelString = __String::createWithFormat("Max Level%i", stageNum);
+            }
+            
+            
             unlockStage = std::vector <bool> (45);
-            
-//            unlockStage [0] = (true);
-            
-            int maxLevel = UserDefault::getInstance()->getIntegerForKey("Max Level", 1);
-            for (int l=0; l<maxLevel; l++) {
-                unlockStage [l] = (true);
-            }
 
-            
-            if (unlockStage.at(levelInt) == true){
-                
-                
-                level = Sprite::create("blue.jpg", Rect(xStart, yStart, size, size));
-            } else {
-                level = Sprite::create("red.jpg", Rect(xStart, yStart, size, size));
-            }
-            
+                int maxLevel = UserDefault::getInstance()->getIntegerForKey(maxLevelString->getCString(), 1);
+                for (int l=0; l<maxLevel; l++) {
+                    unlockStage [l] = (true);
+                    if (unlockStage.at(levelInt) == true){
+                        
+                        level = Sprite::create("blue.jpg", Rect(xStart, yStart, size, size));
+                    } else {
+                        level = Sprite::create("red.jpg", Rect(xStart, yStart, size, size));
+                    }
+                }
+
             
             auto item = MenuItemSprite::create(level, level, level, CC_CALLBACK_1(Stage::GoToGamePlay, this));
             item->setPosition(Point(xStart + ( size / 2), yStart + ( size / 2)));

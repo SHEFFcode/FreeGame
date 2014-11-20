@@ -270,13 +270,15 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         
         auto unlockLevel = UserDefault::getInstance();
         
-        auto maxLevel = unlockLevel->getIntegerForKey("Max Level", 0);
+        __String *maxLevelString = __String::createWithFormat("Max Level%i", levelLoaded );
         
-        if (levelLoaded > maxLevel){
-            maxLevel=levelLoaded+1;
-            unlockLevel->setIntegerForKey("Max Level", maxLevel);
-            unlockLevel->flush();
-        }
+            auto maxLevel = unlockLevel->getIntegerForKey(maxLevelString->getCString(), 0);
+            
+            if (levelLoaded > maxLevel){
+                maxLevel=levelLoaded+1;
+                unlockLevel->setIntegerForKey(maxLevelString->getCString(), maxLevel);
+                unlockLevel->flush();
+            }
 
     }
     

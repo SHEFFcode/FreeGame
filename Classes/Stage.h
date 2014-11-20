@@ -26,6 +26,8 @@ private:
     void GoToLevels3( cocos2d::Ref *sender );
     
     cocos2d::Sprite *level;
+    
+    cocos2d::__String *maxLevelString;
 
 };
 
