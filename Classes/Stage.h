@@ -26,9 +26,13 @@ private:
     void GoToLevels3( cocos2d::Ref *sender );
     
     cocos2d::Sprite *level;
-    
     cocos2d::__String *maxLevelString;
-
+    cocos2d::__String *maxStarString;
+    cocos2d::Sprite *star1;
+    cocos2d::Sprite *star2;
+    cocos2d::Sprite *star3;
+    
+    int maxStars;
 };
 
 #endif // __STAGE__H__

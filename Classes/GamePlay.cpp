@@ -266,19 +266,31 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         
         this->addChild(menu);
         
-        // Unlock next level
+        // Unlock next level and set stars
         
         auto unlockLevel = UserDefault::getInstance();
+        auto maxStringDatabase = UserDefault::getInstance();
         
         __String *maxLevelString = __String::createWithFormat("Max Level%i", levelLoaded );
         
             auto maxLevel = unlockLevel->getIntegerForKey(maxLevelString->getCString(), 0);
-            
+            auto maxStars = 0;
+        
+        __String *maxStarString = __String::createWithFormat("Max Star%i.%i", stageLoaded, levelLoaded);
+        if (score == 1){
+            maxStars=maxStars+1;
+            maxStringDatabase->setIntegerForKey(maxStarString->getCString(), maxStars);
+            unlockLevel->flush();
+        }
+        
             if (levelLoaded > maxLevel){
                 maxLevel=levelLoaded+1;
                 unlockLevel->setIntegerForKey(maxLevelString->getCString(), maxLevel);
                 unlockLevel->flush();
             }
+        
+
+        
 
     }
     

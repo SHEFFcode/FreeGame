@@ -65,8 +65,15 @@ bool Stage::init()
             
             // stage unlocking code
             
+            auto num = Label::createWithTTF(levelNum->getCString(), "Action Man.ttf", visibleSize.height * 0.05 );
+            num->setColor(Color3B::WHITE);
+            num->setPosition(Point( xStart + num->getContentSize().width / 2 + 5, yStart + size - num->getContentSize().height / 2 - 5));
+            this->addChild(num,1);
+            
             for (int s=0; s<10; s++) {
             maxLevelString = __String::createWithFormat("Max Level%i", stageNum);
+            maxStarString = cocos2d::__String::createWithFormat("Max Star%i.%i",stageNum, levelInt);
+
             }
             
             
@@ -76,26 +83,62 @@ bool Stage::init()
                 for (int l=0; l<maxLevel; l++) {
                     unlockStage [l] = (true);
                     if (unlockStage.at(levelInt) == true){
-                        
                         level = Sprite::create("blue.jpg", Rect(xStart, yStart, size, size));
+                        UserDefault::getInstance()->getIntegerForKey(maxStarString->getCString(),0);
+                        maxStars = UserDefault::getInstance()->getIntegerForKey(maxStarString->getCString(),0);
+                        star1 = cocos2d::Sprite::create("star.png");
+                        star1->setColor(cocos2d::Color3B::BLACK);
+                        star1->setScale(.01, .01);
+                        this->addChild(star1,2);
+                        star1->cocos2d::Node::setPosition(Point( xStart + num->getContentSize().width / 2 + 10, yStart + size - num->getContentSize().height / 2 - 100));
+                        
+                        star2 = cocos2d::Sprite::create("star.png");
+                        star2->setColor(cocos2d::Color3B::BLACK);
+                        star2->setScale(.01, .01);
+                        this->addChild(star2,2);
+                        star2->cocos2d::Node::setPosition(Point( xStart + num->getContentSize().width / 2 + 10 + 20, yStart + size - num->getContentSize().height / 2 - 100));
+                        
+                        star3 = cocos2d::Sprite::create("star.png");
+                        star3->setColor(cocos2d::Color3B::BLACK);
+                        star3->setScale(.01, .01);
+                        this->addChild(star3,2);
+                        star3->cocos2d::Node::setPosition(Point( xStart + num->getContentSize().width / 2 + 10 + 40, yStart + size - num->getContentSize().height / 2 - 100));
+                        
+                        if (maxStars == 3) {
+                            star1->setColor(cocos2d::Color3B::YELLOW);
+                            star2->setColor(cocos2d::Color3B::YELLOW);
+                            star3->setColor(cocos2d::Color3B::YELLOW);
+                        }
+                        if (maxStars == 2) {
+                            star1->setColor(cocos2d::Color3B::YELLOW);
+                            star2->setColor(cocos2d::Color3B::YELLOW);
+                        }
+                        
+                        if (maxStars == 1) {
+                            star1->setColor(cocos2d::Color3B::YELLOW);
+                        }
+
                     } else {
                         level = Sprite::create("red.jpg", Rect(xStart, yStart, size, size));
                     }
+
                 }
 
-            
+        
             auto item = MenuItemSprite::create(level, level, level, CC_CALLBACK_1(Stage::GoToGamePlay, this));
             item->setPosition(Point(xStart + ( size / 2), yStart + ( size / 2)));
             item->setTag( ((i + 1) + (j * 5)) + (levelSet * 15) );
             menuArray.insert(i, item);
+
             
             
-            auto num = Label::createWithTTF(levelNum->getCString(), "Action Man.ttf", visibleSize.height * 0.05 );
-            num->setColor(Color3B::WHITE);
-            num->setPosition(Point( xStart + num->getContentSize().width / 2 + 5, yStart + size - num->getContentSize().height / 2 - 5));
-            this->addChild(num,1);
+
+            
+
+            }
+
+
         }
-    }
     
     auto main_menu = MenuItemImage::create("main_menu.png", "main_menu.png", "main_menu.png", CC_CALLBACK_1(Stage::GoToStageSelect, this));
     main_menu->setPosition(Point( visibleSize.width * 0.05 + ( main_menu->getContentSize().width / 2), visibleSize.height * 0.1));
@@ -121,8 +164,11 @@ bool Stage::init()
     // Menu
     auto menu = Menu::createWithArray(menuArray);
     menu->setPosition(Point::ZERO);
-    
+    menu->setZOrder(0);
     this->addChild(menu);
+    
+//    level->setZOrder(0);
+
     
     
     return true;
