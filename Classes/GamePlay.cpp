@@ -266,7 +266,7 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         
         this->addChild(menu);
         
-        // Unlock next level and set stars
+#pragma mark - Unlock next level and set stars
         
         auto unlockLevel = UserDefault::getInstance();
         auto maxStringDatabase = UserDefault::getInstance();
