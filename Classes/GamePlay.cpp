@@ -277,20 +277,38 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
             auto maxStars = 0;
         
         __String *maxStarString = __String::createWithFormat("Max Star%i.%i", stageLoaded, levelLoaded);
-        if (score == 1){
-            maxStars=maxStars+1;
-            maxStringDatabase->setIntegerForKey(maxStarString->getCString(), maxStars);
-            unlockLevel->flush();
+        if (score > maxStars && score < 2){
+            auto maxStarsNew = UserDefault::getInstance()->getIntegerForKey(maxStarString->getCString(),0);
+
+            if (score > maxStarsNew) {
+            maxStars = maxStars + 1;
+            maxStringDatabase -> setIntegerForKey(maxStarString -> getCString(), maxStars);
+            unlockLevel -> flush();
+            }
         }
         
-            if (levelLoaded > maxLevel){
-                maxLevel=levelLoaded+1;
-                unlockLevel->setIntegerForKey(maxLevelString->getCString(), maxLevel);
-                unlockLevel->flush();
+        if (score > maxStars && score < 3) {
+            auto maxStarsNew = UserDefault::getInstance()->getIntegerForKey(maxStarString->getCString(),0);
+            if (score > maxStarsNew) {
+                maxStars = maxStars + 2;
+                maxStringDatabase -> setIntegerForKey(maxStarString -> getCString(), maxStars);
+                unlockLevel -> flush();
             }
-        
-
-        
+        }
+        if (score > maxStars && score < 4) {
+            auto maxStarsNew = UserDefault::getInstance()->getIntegerForKey(maxStarString->getCString(),0);
+            if (score > maxStarsNew) {
+                maxStars = maxStars + 3;
+                maxStringDatabase -> setIntegerForKey(maxStarString -> getCString(), maxStars);
+                unlockLevel -> flush();
+            }
+        }
+    
+        if (levelLoaded > maxLevel){
+            maxLevel = levelLoaded + 1;
+            unlockLevel -> setIntegerForKey(maxLevelString -> getCString(), maxLevel);
+            unlockLevel -> flush();
+        }
 
     }
     

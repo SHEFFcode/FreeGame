@@ -72,7 +72,7 @@ bool Stage::init()
             
             for (int s=0; s<10; s++) {
             maxLevelString = __String::createWithFormat("Max Level%i", stageNum);
-            maxStarString = cocos2d::__String::createWithFormat("Max Star%i.%i",stageNum, levelInt);
+            maxStarString = cocos2d::__String::createWithFormat("Max Star%i.%i",stageNum, levelInt+1);
 
             }
             
