@@ -63,7 +63,7 @@ bool Stage::init()
             
             int levelInt = (((i + 1) + (j * 5)) + (levelSet * 15))-1;
             
-            // stage unlocking code
+#pragma mark - stage unlocking and star setting code
             
             auto num = Label::createWithTTF(levelNum->getCString(), "Action Man.ttf", visibleSize.height * 0.05 );
             num->setColor(Color3B::WHITE);

@@ -5,6 +5,8 @@
 #include "MainMenu.h"
 #include "Stage.h"
 #include "CCUserDefault.h"
+#include "SimpleAudioEngine.h"
+
 
 
 USING_NS_CC;
@@ -42,6 +44,12 @@ bool GamePlay::init()
         return false;
     }
     
+    // preload game sounds
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Point.mp3");
+
+
+    
+    // set game visible size measurements
     Size visibleSize = Director::getInstance()->getVisibleSize();
     visibleWidth = visibleSize.width;
     visibleHeight = visibleSize.height;
@@ -224,6 +232,11 @@ bool GamePlay::onContactBegin( cocos2d::PhysicsContact &contact )
         score++;
         __String *tempScore = __String::createWithFormat("%i", score);
         scoreLabel->setString(tempScore->getCString());
+        
+        // play collection sound
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/Point.mp3");
+
+        
     }
     
     // FinishLine Collision

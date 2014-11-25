@@ -30,6 +30,8 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2B2232201A15885900F64C1E /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B22321E1A15885900F64C1E /* Player.cpp */; };
 		2B2232211A15885900F64C1E /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B22321E1A15885900F64C1E /* Player.cpp */; };
+		2BC4DBC51A24363400C808C3 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 2BC4DBC41A24363400C808C3 /* Sounds */; };
+		2BC4DBC61A24363400C808C3 /* Sounds in Resources */ = {isa = PBXBuildFile; fileRef = 2BC4DBC41A24363400C808C3 /* Sounds */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8A19C43A87006E1F66 /* SplashScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* SplashScreen.cpp */; };
@@ -128,6 +130,7 @@
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2B22321E1A15885900F64C1E /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		2B22321F1A15885900F64C1E /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		2BC4DBC41A24363400C808C3 /* Sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sounds; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		46880B8619C43A87006E1F66 /* SplashScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashScreen.cpp; sourceTree = "<group>"; };
@@ -285,6 +288,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2BC4DBC41A24363400C808C3 /* Sounds */,
 				1EAE7B5B1A081B5E00C19600 /* tiles */,
 				1E87C99119FEE31700C625A5 /* iphone */,
 				46880B7819C43A67006E1F66 /* fonts */,
@@ -481,6 +485,7 @@
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				1EAE7B5C1A081B5E00C19600 /* tiles in Resources */,
+				2BC4DBC51A24363400C808C3 /* Sounds in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
@@ -497,6 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BC4DBC61A24363400C808C3 /* Sounds in Resources */,
 				1EAE7B5D1A081B5E00C19600 /* tiles in Resources */,
 				1E87C99319FEE31700C625A5 /* iphone in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,

@@ -1,5 +1,7 @@
 #include "MainMenu.h"
 #include "StageSelect.h"
+#include "SimpleAudioEngine.h"
+
 
 USING_NS_CC;
 
@@ -27,6 +29,11 @@ bool MainMenu::init()
     {
         return false;
     }
+    // initialize menu music
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/menu.m4a");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/menu.m4a");
+
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
