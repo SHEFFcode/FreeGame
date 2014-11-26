@@ -79,7 +79,7 @@ bool Stage::init()
             
             unlockStage = std::vector <bool> (45);
 
-                int maxLevel = UserDefault::getInstance()->getIntegerForKey(maxLevelString->getCString(), 1);
+                maxLevel = UserDefault::getInstance()->getIntegerForKey(maxLevelString->getCString(), 1);
                 for (int l=0; l<maxLevel; l++) {
                     unlockStage [l] = (true);
                     if (unlockStage.at(levelInt) == true){
@@ -167,9 +167,6 @@ bool Stage::init()
     menu->setZOrder(0);
     this->addChild(menu);
     
-//    level->setZOrder(0);
-
-    
     
     return true;
 }
@@ -178,11 +175,15 @@ void Stage::GoToGamePlay( cocos2d::Ref *sender )
 {
     MenuItem* pMenuItem = (MenuItem *)(sender);
     
-    int levelSet = (int)pMenuItem->getTag();
+    if ((int)pMenuItem->getTag() <= maxLevel) {
+        int levelSet = (int)pMenuItem->getTag();
+        
+        auto scene = GamePlay::createScene(stageNum, levelSet); // stage num, level num
+        
+        Director::getInstance()->replaceScene(scene);
+    }
     
-    auto scene = GamePlay::createScene(stageNum, levelSet); // stage num, level num
-    
-    Director::getInstance()->replaceScene(scene);
+
 }
 
 void Stage::GoToStageSelect(cocos2d::Ref *sender)

@@ -33,6 +33,7 @@ private:
     cocos2d::Sprite *star3;
     
     int maxStars;
+    int maxLevel;
 };
 
 #endif // __STAGE__H__

@@ -32,7 +32,7 @@ bool MainMenu::init()
     // initialize menu music
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/menu.m4a");
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/menu.m4a");
+//    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/menu.m4a");
 
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
